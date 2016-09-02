@@ -1,7 +1,7 @@
 public class Tree {
 	
 	public boolean[] nodes;
-	private int count;
+	public int count;
 	
 	public Tree(int count) {
 		this.count = count;
