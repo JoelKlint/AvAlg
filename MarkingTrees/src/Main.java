@@ -6,7 +6,6 @@ public class Main {
 		try {
 		//	int[] values = {3,7,15,31,63,127,255,511,1023,2047,4095,8191,16383,32767,65536,131071,262143,524287,1048575};
 			int[] values = {3,7,15,31,63,127,255,511,1023,2047,4095,8191};
-		//	int[] values = {255};
 			int nbrOfTests = 10;
 			
 			PrintWriter pw = new PrintWriter("result.csv", "UTF-8");
