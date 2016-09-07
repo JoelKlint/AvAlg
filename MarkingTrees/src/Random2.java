@@ -1,11 +1,12 @@
 import java.util.Random;
 import java.util.Stack;
 
-public class Random2 {
+public class Random2 extends Random1 {
 	
 	public Stack<Integer> pool;
 	
 	public Random2(int max) {
+		super(max);
 		int[] values = new int[max];
 		for(int i = 0; i < max; i++) {
 			values[i] = i + 1;
