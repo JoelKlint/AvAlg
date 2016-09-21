@@ -64,14 +64,18 @@ public class Main {
 		return withoutNode > withoutNeighbours ? withoutNode : withoutNeighbours;		
 	}
 	
-	private static boolean neighboursOfNodeHasEdge(int[][] matrix, int node) {
-		ArrayList<Integer> nodeNeighbours = new ArrayList<Integer>();
-//		Add all neighbours
+	private static ArrayList<Integer> getNeighborsofNode(int[][] matrix, int nodeIndex) {
+		ArrayList<Integer> neighbors = new ArrayList<Integer>();
 		for(int col = 0; col < matrix.length; col++) {
-			if(matrix[node][col] != 0) {
-				nodeNeighbours.add(col);
+			if(matrix[nodeIndex][col] != 0) {
+				neighbors.add(col);
 			}
 		}
+		return neighbors;
+	}
+	
+	private static boolean neighboursOfNodeHasEdge(int[][] matrix, int node) {
+		ArrayList<Integer> nodeNeighbours = getNeighborsofNode(matrix, node);
 		int neighbour1 = nodeNeighbours.remove(0);
 		int neighbour2 = nodeNeighbours.remove(0);
 		if( matrix[neighbour1][neighbour2] == 1 ) {
@@ -94,14 +98,7 @@ public class Main {
 	}
 	
 	private static int[][] addNewNodeWithNeighbours(int[][] matrix, int node) {
-		ArrayList<Integer> nodeNeighbours = new ArrayList<Integer>();
-//		Add all neighbours
-		for(int col = 0; col < matrix.length; col++) {
-			if(matrix[node][col] != 0) {
-				nodeNeighbours.add(col);
-			}
-		}
-		
+		ArrayList<Integer> nodeNeighbours = getNeighborsofNode(matrix, node);
 		HashSet<Integer> zNeighbours = new HashSet<Integer>();
 		for(int neighbor : nodeNeighbours) {
 			for(int col = 0; col < matrix.length; col++) {
@@ -159,13 +156,8 @@ public class Main {
 	}
 	
 	private static int[][] removeNeighboursAndSelfFromGraph(int[][] matrix, int nodeIndex) {
-		ArrayList<Integer> neighbours = new ArrayList<Integer>();
+		ArrayList<Integer> neighbours = getNeighborsofNode(matrix, nodeIndex);
 		neighbours.add(nodeIndex);
-		for(int col = 0; col < matrix.length; col++) {
-			if(matrix[nodeIndex][col] != 0) {
-				neighbours.add(col);
-			}
-		}
 		Collections.sort(neighbours);
 		Collections.reverse(neighbours);
 		
