@@ -10,7 +10,7 @@ public class Main {
 	private static int callCount = -1;
 	public static void main (String[]args) throws IOException {
 		
-		Parser parser = new Parser("./data/g30.in");
+		Parser parser = new Parser("./data/g70.in");
 		int[][] matrix = parser.parse();
 		
 		int[][] test = {
@@ -33,7 +33,7 @@ public class Main {
 		}
 		
 		int nodeWithTwoNeighbours = -1;
-		if( (nodeWithTwoNeighbours = nodeWithTwoNeighbours(matrix)) > -1 ) {
+		if( (nodeWithTwoNeighbours = findNodeWithXAmountOfNeighbours(matrix, 2)) > -1 ) {
 			if( neighboursOfNodeHasEdge(matrix, nodeWithTwoNeighbours) ) {
 				int[][] newGraph = removeNeighboursAndSelfFromGraph(matrix, nodeWithTwoNeighbours);
 				return 1 + recurse(newGraph);
@@ -45,13 +45,13 @@ public class Main {
 		}
 		
 		int nodeWithOneNeighbour = -1;
-		if( (nodeWithOneNeighbour = findNodeWithOneNeighbour(matrix)) > -1 ) {
+		if( (nodeWithOneNeighbour = findNodeWithXAmountOfNeighbours(matrix, 1)) > -1 ) {
 			int[][] newGraph = removeNeighboursAndSelfFromGraph(matrix, nodeWithOneNeighbour);
 			return 1 + recurse(newGraph);
 		}
 		
 		int neighbourlessNode = -1;
-		if( (neighbourlessNode = neighbourlessNode(matrix)) > -1 ) {
+		if( (neighbourlessNode = findNodeWithXAmountOfNeighbours(matrix, 0)) > -1 ) {
 			int[][] newGraph = removeNodeFromGraph(matrix, neighbourlessNode);
 			return 1 + recurse(newGraph);
 		}
@@ -80,39 +80,13 @@ public class Main {
 		return false;
 	}
 	
-	private static int findNodeWithOneNeighbour(int[][] matrix) {
+	public static int findNodeWithXAmountOfNeighbours(int[][] matrix, int neighborCount) {
 		for(int row = 0; row < matrix.length; row++) {
 			int edges = 0;
 			for(int col = 0; col < matrix.length; col++) {
 				edges += matrix[row][col];
 			}
-			if(edges == 1) {
-				return row;
-			}
-		}
-		return -1;
-	}
-	
-	private static int neighbourlessNode(int[][] matrix) {
-		for(int row = 0; row < matrix.length; row++) {
-			int edges = 0;
-			for(int col = 0; col < matrix.length; col++) {
-				edges += matrix[row][col];
-			}
-			if(edges == 0) {
-				return row;
-			}
-		}
-		return -1;
-	}
-	
-	private static int nodeWithTwoNeighbours(int[][] matrix) {
-		for(int row = 0; row < matrix.length; row++) {
-			int edges = 0;
-			for(int col = 0; col < matrix.length; col++) {
-				edges += matrix[row][col];
-			}
-			if(edges == 2) {
+			if(edges == neighborCount) {
 				return row;
 			}
 		}
