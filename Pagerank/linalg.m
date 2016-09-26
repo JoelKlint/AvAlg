@@ -1,5 +1,5 @@
 %Open file
-fileID = fopen('data/three.txt', 'r');
+fileID = fopen('data/wikipedia.txt', 'r');
 
 %Read first row
 row = fgetl(fileID);
@@ -38,7 +38,20 @@ p = zeros(1, amountOfVertices);
 p(1) = 1;
 P = alpha*(H+D) + ((1-alpha)/amountOfVertices)*ones(amountOfVertices);
 %iterations = input('How many iterations?\n');
-prob = p*P^10;
+
+old_prob = p*P;
+new_prob = p*P*P;
+counter = 1;
+while max(abs(old_prob-new_prob)) >= 0.01
+    abs(old_prob-new_prob)
+    old_prob = new_prob;
+    new_prob = new_prob*P;
+    counter = counter+1;
+end
+counter
+counter * amountOfVertices^2
+%%
+prob = p*P^54325;
 %find largest elements
 max_indexes = double.empty;
 max_values = double.empty;
