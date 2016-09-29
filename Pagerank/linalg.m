@@ -1,5 +1,5 @@
 %Open file
-fileID = fopen('data/wikipedia.txt', 'r');
+fileID = fopen('data/three.txt', 'r');
 
 %Read first row
 row = fgetl(fileID);

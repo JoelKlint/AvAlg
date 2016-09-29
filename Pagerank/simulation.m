@@ -26,8 +26,13 @@ alpha = 85/100;
 current_vertice = 1;
 result = zeros(1, amountOfVertices);
 result(current_vertice) = result(current_vertice) + 1;
+old_res = result;
+old_res(current_vertice) = 1000;
+counter = 1;
 
-for iteration = 1:iterations
+%for iteration = 1:iterations
+while max(abs(1./old_res-1./result)) >= 0.000001
+    counter = counter+1;
     walk_or_jump = rand;
     if walk_or_jump > alpha
         %jump
@@ -41,6 +46,9 @@ for iteration = 1:iterations
             %jump
             new_vertice = randi([1 amountOfVertices]);
             current_vertice = new_vertice;
+            
+            old_res = result;
+            
             result(current_vertice) = result(current_vertice) + 1;
         else
             %build propability vector
@@ -56,8 +64,13 @@ for iteration = 1:iterations
             new_vertice_index = randi([1 size(prob_vector, 2)]);
             new_vertice = prob_vector(new_vertice_index);
             current_vertice = new_vertice;
+            
+            old_res = result;
+            
             result(current_vertice) = result(current_vertice) + 1;
         end
-    end
+    end    
 end
-result
+% 1./old_res
+% 1./result
+counter
