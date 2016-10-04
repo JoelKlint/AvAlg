@@ -48,6 +48,7 @@ public class Parser {
 			System.out.println("Could not find input file");
 			e.printStackTrace();
 		}
+		System.out.println("Finished parsing graph");
 		return graph;
 	}
 	
@@ -68,31 +69,40 @@ public class Parser {
 				
 				//skip comments
 				if(splitLine[0].equals("c")) {
+					line = reader.readLine();
+					continue;
 				}
 				
 				//Add nodes to bag
 				else if(splitLine[0].equals("b")) {
 					Bag bag = tree.getBag(Integer.parseInt(splitLine[1]));
 					//Add all nodes on the line
-					for(int nodeIndex = 2; nodeIndex < splitLine.length; nodeIndex++) {
+					for(int i = 2; i < splitLine.length; i++) {
+						int nodeIndex = Integer.parseInt(splitLine[i]);
 						bag.addNode(graph.getNode(nodeIndex));
 					}
+					line = reader.readLine();
+					continue;
 				}
 				else {
 					Bag bag1 = tree.getBag(Integer.parseInt(splitLine[0]));
 					Bag bag2 = tree.getBag(Integer.parseInt(splitLine[1]));
 					bag1.addChild(bag2);
+					line = reader.readLine();
+					continue;
 				}
 				
-				line = reader.readLine();
+				
 			}
+			
+			tree.calculateAllIS();
 			
 			
 		} catch (FileNotFoundException e) {
 			System.out.println("Could not find input file");
 			e.printStackTrace();
 		}
-		
+		System.out.println("Finished parsing tree");
 		return tree;
 	}
 	

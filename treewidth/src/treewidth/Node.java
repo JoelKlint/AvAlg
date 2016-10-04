@@ -19,5 +19,11 @@ public class Node {
 	public void addNeighbor(Node node) {
 		neighbors.add(node);
 	}
+	
+	public ArrayList<Node> getNeighbors() {
+		return neighbors;
+	}
+	
+
 
 }

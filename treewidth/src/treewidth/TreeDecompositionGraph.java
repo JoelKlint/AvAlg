@@ -18,5 +18,20 @@ public class TreeDecompositionGraph {
 		}
 		return bags[index];
 	}
+	
+	public Bag getRoot() {
+		for(Bag bag : bags) {
+			if(bag.childCount() == 1) {
+				return bag;
+			}
+		}
+		return null;
+	}
+	
+	public void calculateAllIS() {
+		for(Bag bag : bags) {
+			bag.calculateAllIndependentSets();
+		}
+	}
 
 }
