@@ -14,7 +14,6 @@ public class Parser {
 	}
 	
 	public Graph parseGraph(String path) throws IOException {
-		System.out.println("Started parsing graph");
 		Graph graph = null;
 		try {
 			reader = new BufferedReader(new FileReader(path));
@@ -28,8 +27,9 @@ public class Parser {
 			
 			while(line != null) {
 				splitLine = line.split(" ");
+				
 				//Skip comments
-				if(splitLine[0] == "c") {
+				if(splitLine[0].equals("c")) {
 					continue;
 				}
 				
@@ -51,25 +51,40 @@ public class Parser {
 		return graph;
 	}
 	
-	public void parseTree(String path) throws IOException {
+	public TreeDecompositionGraph parseTree(String path, Graph graph) throws IOException {
+		TreeDecompositionGraph tree = null;
 		try {
 			reader = new BufferedReader(new FileReader(path));
-			String line = reader.readLine();
-			String[] firstLine = line.split(" ");
-			int nbrOfBags = Integer.parseInt(firstLine[2]);
-			int width = Integer.parseInt(firstLine[3]) - 1;
-			int nbrOfVertices = Integer.parseInt(firstLine[4]);
+			String[] splitLine = reader.readLine().split(" ");
+			int nbrOfBags = Integer.parseInt(splitLine[2]);
+			int width = Integer.parseInt(splitLine[3]) - 1;
+			int nbrOfVertices = Integer.parseInt(splitLine[4]);
 			
-			line = reader.readLine();
-			String [] bagLine = line.split(" ");
+			tree = new TreeDecompositionGraph(nbrOfBags, width);
 			
-			ArrayList<TDNode> treeDecomp = new ArrayList<TDNode>();
-			
-			while (bagLine[0] == "b"){
-				TDNode tdNode = new TDNode(width);
+			String line = reader.readLine();			
+			while(line != null) {
+				splitLine = line.split(" ");
 				
-				//tdNode.addNodeToBag()
+				//skip comments
+				if(splitLine[0].equals("c")) {
+				}
 				
+				//Add nodes to bag
+				else if(splitLine[0].equals("b")) {
+					Bag bag = tree.getBag(Integer.parseInt(splitLine[1]));
+					//Add all nodes on the line
+					for(int nodeIndex = 2; nodeIndex < splitLine.length; nodeIndex++) {
+						bag.addNode(graph.getNode(nodeIndex));
+					}
+				}
+				else {
+					Bag bag1 = tree.getBag(Integer.parseInt(splitLine[0]));
+					Bag bag2 = tree.getBag(Integer.parseInt(splitLine[1]));
+					bag1.addChild(bag2);
+				}
+				
+				line = reader.readLine();
 			}
 			
 			
@@ -77,6 +92,8 @@ public class Parser {
 			System.out.println("Could not find input file");
 			e.printStackTrace();
 		}
+		
+		return tree;
 	}
 	
 

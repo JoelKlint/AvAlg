@@ -6,7 +6,9 @@ public class Main {
 	public static void main(String[]args) throws IOException {
 		
 		Parser parser = new Parser();
-		Graph graph = parser.parseGraph("./data/web4.gr");
+		String fileName = "wedge";
+		Graph graph = parser.parseGraph("./data/" + fileName + ".gr");
+		TreeDecompositionGraph tree = parser.parseTree("./data/" + fileName + ".td", graph);
 		
 	}
 
