@@ -24,6 +24,8 @@ public class Node {
 		return neighbors;
 	}
 	
-
+	public String toString() {
+		return "Node " + index;
+	}
 
 }

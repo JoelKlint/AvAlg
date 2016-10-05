@@ -9,9 +9,7 @@ public class Parser {
 	
 	BufferedReader reader;
 	
-	public Parser() {
-		
-	}
+	public Parser() {}
 	
 	public Graph parseGraph(String path) throws IOException {
 		Graph graph = null;

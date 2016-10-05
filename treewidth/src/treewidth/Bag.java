@@ -1,23 +1,23 @@
 package treewidth;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Bag {
 	
 	private int index;
 	private ArrayList<Bag> children;
-	private ArrayList<Node> nodes;
-	private ArrayList<ArrayList<Node>> independentSets;
+	private NodeSet nodes;
+	private HashSet<NodeSet> independentSets;
 	
 	public Bag(int index, int treeWidth) {
 		this.index = index;
 		this.children = new ArrayList<Bag>();
-		this.nodes = new ArrayList<Node>();
-		//indSets = new int[2^(treeWidth+1)];
-		independentSets = new ArrayList<ArrayList<Node>>();
+		this.nodes = new NodeSet();
+		independentSets = new HashSet<NodeSet>();
 	}
 	
-	public ArrayList<Node> nodes() {
+	public NodeSet nodes() {
 		return nodes;
 	}
 	
@@ -37,25 +37,32 @@ public class Bag {
 		return children;
 	}
 	
+	public String toString() {
+		return "Bag " + index;
+	}
+	
 	public void calculateAllIndependentSets() {
-		ArrayList<Node> ignore = new ArrayList<Node>();
-		ArrayList<Node> IS = new ArrayList<Node>();
+		NodeSet ignore = new NodeSet();
+		NodeSet IS = new NodeSet();
 		goDeeper(IS, ignore);
 	}
 	
-	private void goDeeper(ArrayList<Node> IS, ArrayList<Node> ignore) {
-		
-		if(IS.size() + ignore.size() >= nodes.size()) {
+	private void goDeeper(NodeSet IS, NodeSet ignore) {		
+		//Base case
+		NodeSet calcIgnore = (NodeSet) ignore.clone();
+		calcIgnore.removeAll(nodes);
+		int nonIgnoreCount = calcIgnore.size();
+		if(IS.size() + (ignore.size() - nonIgnoreCount) >= nodes.size()) {
 			return;
 		}
 		
-		ArrayList<Node> options = (ArrayList<Node>) nodes.clone();
+		NodeSet options =  (NodeSet) nodes.clone();
 		options.removeAll(IS);
 		options.removeAll(ignore);			
 		
 		for(Node option : options) {
-			ArrayList<Node> newIS = (ArrayList<Node>) IS.clone();
-			ArrayList<Node> newIgnore = (ArrayList<Node>) ignore.clone();
+			NodeSet newIS = (NodeSet) IS.clone();
+			NodeSet newIgnore = (NodeSet) ignore.clone();
 			newIS.add(option);
 			newIgnore.addAll(option.getNeighbors());
 			independentSets.add(newIS);
@@ -66,3 +73,5 @@ public class Bag {
 	}
 
 }
+
+
