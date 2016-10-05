@@ -8,16 +8,18 @@ public class Bag {
 	private int index;
 	private ArrayList<Bag> children;
 	private NodeSet nodes;
-	private HashSet<NodeSet> independentSets;
+	private NodeSet[] independentSets;
+	private int[] ft;
 	
 	public Bag(int index, int treeWidth) {
 		this.index = index;
 		this.children = new ArrayList<Bag>();
 		this.nodes = new NodeSet();
-		independentSets = new HashSet<NodeSet>();
+		//independentSets = new HashSet<NodeSet>();
+		//graphIndependentSets = new HashSet<NodeSet>();
 	}
 	
-	public NodeSet nodes() {
+	public NodeSet getNodes() {
 		return nodes;
 	}
 	
@@ -41,13 +43,55 @@ public class Bag {
 		return "Bag " + index;
 	}
 	
-	public void calculateAllIndependentSets() {
-		NodeSet ignore = new NodeSet();
-		NodeSet IS = new NodeSet();
-		goDeeper(IS, ignore);
+	public boolean hasNoChildren() {
+		return children.isEmpty();
 	}
 	
-	private void goDeeper(NodeSet IS, NodeSet ignore) {		
+	public NodeSet[] getIndependentSets() {
+		return independentSets;
+	}
+	
+	public int getFt(NodeSet set) {
+		int index = findIndexOfNodeSet(set);
+		return ft[index];
+	}
+	
+	public void setFt(NodeSet set, int value) {
+		int index = findIndexOfNodeSet(set);
+		ft[index] = value;
+	}
+	
+	private int findIndexOfNodeSet(NodeSet set) {
+		for(int i = 0; i < independentSets.length; i++) {
+			if(independentSets[i].equals(set)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public int getMaxIndependentSet() {
+		int max = 0;
+		for( int ftu : ft ) {
+			if(ftu > max) {
+				max = ftu;
+			}
+		}
+		return max;
+	}
+	
+	public void calculateAllIndependentSets() {
+		HashSet<NodeSet> currentIndependentSets = new HashSet<NodeSet>();
+		NodeSet ignore = new NodeSet();
+		NodeSet IS = new NodeSet();
+		goDeeper(IS, ignore, currentIndependentSets);
+		independentSets = new NodeSet[currentIndependentSets.size()];
+		currentIndependentSets.toArray(independentSets);
+		ft = new int[independentSets.length];
+		
+	}
+	
+	private void goDeeper(NodeSet IS, NodeSet ignore, HashSet<NodeSet> currentIndependentSets) {		
 		//Base case
 		NodeSet calcIgnore = (NodeSet) ignore.clone();
 		calcIgnore.removeAll(nodes);
@@ -65,8 +109,8 @@ public class Bag {
 			NodeSet newIgnore = (NodeSet) ignore.clone();
 			newIS.add(option);
 			newIgnore.addAll(option.getNeighbors());
-			independentSets.add(newIS);
-			goDeeper(newIS, newIgnore);
+			currentIndependentSets.add(newIS);
+			goDeeper(newIS, newIgnore, currentIndependentSets);
 		}
 
 		

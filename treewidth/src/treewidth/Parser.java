@@ -54,21 +54,27 @@ public class Parser {
 		TreeDecompositionGraph tree = null;
 		try {
 			reader = new BufferedReader(new FileReader(path));
-			String[] splitLine = reader.readLine().split(" ");
-			int nbrOfBags = Integer.parseInt(splitLine[2]);
-			int width = Integer.parseInt(splitLine[3]) - 1;
-			int nbrOfVertices = Integer.parseInt(splitLine[4]);
+			String[] splitLine;
+			int nbrOfBags;
+			int width;
+			int nbrOfVertices;
 			
-			tree = new TreeDecompositionGraph(nbrOfBags, width);
-			
-			String line = reader.readLine();			
+			String line = reader.readLine();	
 			while(line != null) {
+				//System.out.println(line);
 				splitLine = line.split(" ");
 				
 				//skip comments
 				if(splitLine[0].equals("c")) {
-					line = reader.readLine();
-					continue;
+					//Do nothing
+				}
+				
+				else if(splitLine[0].equals("s")) {
+					splitLine = line.split(" ");
+					nbrOfBags = Integer.parseInt(splitLine[2]);
+					width = Integer.parseInt(splitLine[3]) - 1;
+					nbrOfVertices = Integer.parseInt(splitLine[4]);
+					tree = new TreeDecompositionGraph(nbrOfBags, width);
 				}
 				
 				//Add nodes to bag
@@ -79,16 +85,15 @@ public class Parser {
 						int nodeIndex = Integer.parseInt(splitLine[i]);
 						bag.addNode(graph.getNode(nodeIndex));
 					}
-					line = reader.readLine();
-					continue;
 				}
 				else {
 					Bag bag1 = tree.getBag(Integer.parseInt(splitLine[0]));
 					Bag bag2 = tree.getBag(Integer.parseInt(splitLine[1]));
 					bag1.addChild(bag2);
-					line = reader.readLine();
-					continue;
 				}
+				
+				line = reader.readLine();
+				continue;
 				
 				
 			}
