@@ -15,11 +15,7 @@ public class Parser {
 		Graph graph = null;
 		try {
 			reader = new BufferedReader(new FileReader(path));
-			String[] splitLine  = reader.readLine().split(" ");
-			int nbrOfVertices = Integer.parseInt(splitLine[2]);
-			int nbrOfEdges = Integer.parseInt(splitLine[3]);
-			
-			graph = new Graph(nbrOfVertices);
+			String[] splitLine;
 			
 			String line = reader.readLine();
 			
@@ -28,15 +24,23 @@ public class Parser {
 				
 				//Skip comments
 				if(splitLine[0].equals("c")) {
-					continue;
+					//Do nothing
 				}
 				
-				int node1index = Integer.parseInt(splitLine[0]);
-				int node2index = Integer.parseInt(splitLine[1]);
-				Node node1 = graph.getNode(node1index);
-				Node node2 = graph.getNode(node2index);
-				node1.addNeighbor(node2);
-				node2.addNeighbor(node1);		
+				else if(splitLine[0].equals("p")) {
+					splitLine = line.split(" ");
+					int nbrOfVertices = Integer.parseInt(splitLine[2]);
+					int nbrOfEdges = Integer.parseInt(splitLine[3]);
+					graph = new Graph(nbrOfVertices);
+				}
+				else {
+					int node1index = Integer.parseInt(splitLine[0]);
+					int node2index = Integer.parseInt(splitLine[1]);
+					Node node1 = graph.getNode(node1index);
+					Node node2 = graph.getNode(node2index);
+					node1.addNeighbor(node2);
+					node2.addNeighbor(node1);		
+				}
 				
 				line = reader.readLine();
 			}
@@ -46,7 +50,7 @@ public class Parser {
 			System.out.println("Could not find input file");
 			e.printStackTrace();
 		}
-		System.out.println("Finished parsing graph");
+		//System.out.println("Finished parsing graph");
 		return graph;
 	}
 	
@@ -90,6 +94,7 @@ public class Parser {
 					Bag bag1 = tree.getBag(Integer.parseInt(splitLine[0]));
 					Bag bag2 = tree.getBag(Integer.parseInt(splitLine[1]));
 					bag1.addChild(bag2);
+					bag2.addChild(bag1);
 				}
 				
 				line = reader.readLine();
@@ -105,7 +110,7 @@ public class Parser {
 			System.out.println("Could not find input file");
 			e.printStackTrace();
 		}
-		System.out.println("Finished parsing tree");
+		//System.out.println("Finished parsing tree");
 		return tree;
 	}
 	

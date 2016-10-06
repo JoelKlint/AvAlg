@@ -18,5 +18,9 @@ public class Graph {
 		}
 		return nodes[index];
 	}
+	
+	public int getNumberOfVertices() {
+		return nodes.length;
+	}
 
 }

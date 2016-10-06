@@ -15,6 +15,9 @@ public class Algorithm {
 	
 	public int findMaxIndependentSet() {
 		Bag rootBag = tree.getRoot();
+		if(rootBag == null) {
+			return -1;
+		}
 		visitBag(rootBag);
 		return rootBag.getMaxIndependentSet();
 	}
@@ -71,7 +74,9 @@ public class Algorithm {
 					}
 					
 					//Add the largest IS of child to total sum of ftU
-					ftU += Collections.max(potentialSets);
+					if(potentialSets.size() > 0) {
+						ftU += Collections.max(potentialSets);						
+					}
 					
 				}
 				

@@ -116,6 +116,10 @@ public class Bag {
 		
 	}
 
+	public void removeChild(Bag bag) {
+		children.remove(bag);
+	}
+
 }
 
 
