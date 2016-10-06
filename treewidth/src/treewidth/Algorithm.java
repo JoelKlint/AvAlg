@@ -18,7 +18,6 @@ public class Algorithm {
 		if(rootBag == null) {
 			return -1;
 		}
-		System.out.println("Root bag is: " + rootBag.toString());
 		visitBag(rootBag);
 		return rootBag.getMaxIndependentSet();
 	}

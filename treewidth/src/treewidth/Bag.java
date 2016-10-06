@@ -82,6 +82,7 @@ public class Bag {
 	
 	public void calculateAllIndependentSets() {
 		HashSet<NodeSet> currentIndependentSets = new HashSet<NodeSet>();
+		currentIndependentSets.add(new NodeSet());
 		NodeSet ignore = new NodeSet();
 		NodeSet IS = new NodeSet();
 		goDeeper(IS, ignore, currentIndependentSets);
